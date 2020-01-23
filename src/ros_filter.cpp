@@ -1102,7 +1102,7 @@ void RosFilter::loadParams()
     rclcpp::Parameter parameter;
     if (rclcpp::PARAMETER_NOT_SET != node_->get_parameter(pose_topic_name, parameter)) {
       more_params = true;
-      pose_topic = node_->get_parameter(pose_topic_name, parameter);
+      pose_topic = parameter.as_string();
     } else {
       more_params = false;
       node_->undeclare_parameter(pose_topic_name);
