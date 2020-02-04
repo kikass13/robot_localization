@@ -101,14 +101,16 @@ NavSatTransform::NavSatTransform(const rclcpp::NodeOptions & options)
   frequency = this->declare_parameter("frequency", frequency);
   delay = this->declare_parameter("delay", delay);
   transform_timeout = this->declare_parameter("transform_timeout", transform_timeout);
+  std::vector<double> datum_vals;
+  datum_vals = this->declare_parameter("datum", datum_vals);
 
   transform_timeout_ = tf2::durationFromSec(transform_timeout);
 
   datum_srv_ = this->create_service<robot_localization::srv::SetDatum>(
     "datum", std::bind(&NavSatTransform::datumCallback, this, _1, _2));
 
-  std::vector<double> datum_vals;
-  if (use_manual_datum_ && this->get_parameter("datum", datum_vals)) {
+  if (use_manual_datum_ && this->has_parameter("datum")) {
+
     double datum_lat = 0.0;
     double datum_lon = 0.0;
     double datum_yaw = 0.0;
